@@ -14,14 +14,7 @@ describe Griddler::Sendgrid::Adapter, '.normalize_params' do
       to: 'Hello World <hi@example.com>',
       cc: 'emily@example.com',
       from: 'There <there@example.com>',
-      charsets: {
-        to: 'UTF-8',
-        cc: 'UTF-8',
-        subject: 'UTF-8',
-        from: 'UTF-8',
-        html: 'UTF-8',
-        text: 'iso-8859-1'
-      }.to_json
+      charsets: { to: 'UTF-8', text: 'iso-8859-1' }.to_json
     }
 
   it 'changes attachments to an array of files' do
@@ -143,10 +136,7 @@ describe Griddler::Sendgrid::Adapter, '.normalize_params' do
 
     charsets.should be_present
     charsets[:text].should eq 'iso-8859-1'
-
-    %i[to from cc subject html].each do |field|
-      charsets[field].should eq 'UTF-8'
-    end
+    charsets[:to].should eq 'UTF-8'
   end
 
   it 'does not explode if charsets is not JSON-able' do
@@ -154,6 +144,7 @@ describe Griddler::Sendgrid::Adapter, '.normalize_params' do
 
     normalize_params(params)[:charsets].should be_nil
   end
+
   def default_params
     {
       text: 'hi',
@@ -161,14 +152,7 @@ describe Griddler::Sendgrid::Adapter, '.normalize_params' do
       cc: 'cc@example.com',
       from: 'there@example.com',
       envelope: "{\"to\":[\"johny@example.com\"], \"from\": [\"there@example.com\"]}",
-      charsets: {
-        to: 'UTF-8',
-        cc: 'UTF-8',
-        subject: 'UTF-8',
-        from: 'UTF-8',
-        html: 'UTF-8',
-        text: 'iso-8859-1'
-      }.to_json
+      charsets: { to: 'UTF-8', text: 'iso-8859-1' }.to_json
     }
   end
 end
