@@ -142,7 +142,12 @@ describe Griddler::Sendgrid::Adapter, '.normalize_params' do
   it 'does not explode if charsets is not JSON-able' do
     params = default_params.merge(charsets: 'This is not JSON')
 
-    normalize_params(params)[:charsets].should be_nil
+    normalize_params(params)[:charsets].should eq({})
+  end
+
+  it 'defaults charsets to an empty hash if it is not specified in params' do
+    params = default_params.except(:charsets)
+    normalize_params(params)[:charsets].should eq({})
   end
 
   def default_params

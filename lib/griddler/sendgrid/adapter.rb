@@ -42,11 +42,10 @@ module Griddler
       end
 
       def charsets
-        if params[:charsets].present?
-          JSON.parse(params[:charsets]).symbolize_keys
-        end
+        return {} unless params[:charsets].present?
+        JSON.parse(params[:charsets]).symbolize_keys
       rescue JSON::ParserError
-        nil
+        {}
       end
 
 
